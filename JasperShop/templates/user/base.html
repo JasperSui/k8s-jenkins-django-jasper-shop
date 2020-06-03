@@ -1,0 +1,64 @@
+{% extends 'main/base.html' %} {% block title %} Jasper Shop {% endblock %} {% block content %} {% load static %}
+<div class="container">
+    <div class="row">
+
+        <div class="col-lg-2 mt-4">
+            <div class="row user-page-brief">
+                <div class="col-lg-3 px-1">
+                    <img src="{% static 'images/user_default.png' %} " class="dropdown-toggle profile-thumbnail mr-1">
+                </div>
+                <div class="col-lg-9 row pl-4 pr-0">
+                    <div class="font-weight-bold px-0 ">
+                        {{ user.telephone }}
+                    </div>
+                    <div class="col-lg-12 row pl-3 px-0">
+                        <div>
+                            <a class="edit-profile-link" href="/user/account/profile/">
+                                <svg width="12" height="12" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg"
+                                    style="margin-right: 4px;">
+                                    <path
+                                        d="M8.54 0L6.987 1.56l3.46 3.48L12 3.48M0 8.52l.073 3.428L3.46 12l6.21-6.18-3.46-3.48"
+                                        fill="#9B9B9B" fill-rule="evenodd"></path>
+                                </svg>編輯個人資料</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-10 ml-3 profile-unit-link"><a>我的帳號</a></div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-10 ml-3 profile-unit-link"><a>購買清單</a></div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-10 ml-3 profile-unit-link"><a>我的團購</a></div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-10 ml-3 profile-unit-link"><a>通知總覽</a></div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-10 ml-3 profile-unit-link"><a>我的優惠券</a></div>
+            </div>
+        </div>
+
+        <div class="col-lg-10 mt-4">
+            {% block col-lg-10 %}{% endblock %}
+        </div>
+    </div>
+</div>
+
+<script>
+        $(function () {
+                $(".purchase-list-status").click(function () {
+                    var $this = $(this);
+                    $(".purchase-list-status").removeClass('purchase-list-status--selected');
+                    $this.addClass('purchase-list-status--selected')
+                });
+            });
+</script>
+{% endblock %}

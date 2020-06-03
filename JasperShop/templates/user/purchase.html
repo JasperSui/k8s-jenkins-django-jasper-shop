@@ -1,0 +1,125 @@
+{% extends 'user/base.html' %}
+{% block col-lg-10 %}
+{% load static %}
+{% load filters %}
+    <div class="row purchase">
+
+        <div class="col purchase-list-status {% if order_status_id == 1 %} purchase-list-status--selected {% endif %}" onclick="location.href='{{ base_url }}user/purchase/1'">
+            <span class="purchase-list-status-label">待付款</span>
+            {% if waiting_for_pay_number > 0 %}
+            <span class="purchase-list-page__tab-count">({{ waiting_for_pay_number }})</span>
+            {% endif %}
+        </div>
+
+        <div class="col purchase-list-status {% if order_status_id == 2 %} purchase-list-status--selected {% endif %}" onclick="location.href='{{ base_url }}user/purchase/2'">
+            <span class="purchase-list-status-label">待出貨</span>
+            {% if waiting_for_ship_number > 0 %}
+            <span class="purchase-list-page__tab-count">({{ waiting_for_ship_number }})</span>
+            {% endif %}
+        </div>
+
+        <div class="col purchase-list-status {% if order_status_id == 3 %} purchase-list-status--selected {% endif %}" onclick="location.href='{{ base_url }}user/purchase/3'">
+            <span class="purchase-list-status-label">待收貨</span>
+            {% if waiting_for_receive_number > 0 %}
+            <span class="purchase-list-page__tab-count">({{ waiting_for_receive_number }})</span>
+            {% endif %}
+        </div>
+        
+        <div class="col purchase-list-status {% if order_status_id == 4 %} purchase-list-status--selected {% endif %}" onclick="location.href='{{ base_url }}user/purchase/4'">
+            <span class="purchase-list-status-label">完成</span>
+            {% if finished_number > 0 %}
+            <span class="purchase-list-page__tab-count">({{ finished_number }})</span>
+            {% endif %}
+        </div>
+
+        <div class="col purchase-list-status {% if order_status_id == 5 %} purchase-list-status--selected {% endif %}" onclick="location.href='{{ base_url }}user/purchase/5'">
+            <span class="purchase-list-status-label">取消</span>
+            {% if cancelled_number > 0 %}
+            <span class="purchase-list-page__tab-count">({{ cancelled_number }})</span>
+            {% endif %}
+        </div>
+
+    </div>
+    
+    {% if order_list %}
+        {% for order in order_list %}
+            <div class="row purchase-second order-card__content">
+                <div class="col order-content-status mb-2 mr-2">{{ order.order_status.name }}</div>
+                <div class="container order-content__item-list" style="    padding: .625rem 0;">
+                    <div class="row mb-3">
+                        <div class="col-1 mr-4">
+                            <img class="order-content__item__image" src="{% static order.product.img_path %}">
+                        </div>
+                        <div class="col-8">
+                            <div class="row">
+                                <div class="order-content__item__name">
+                                    {{ order.product.name }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div>
+                                    x {{ order.number }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2 ml-4">
+                            <div class="order-content__item__price pt-4">
+                                <div class="order-content__item__price-text">
+                                    <div>${{ order.product.price|ToCurrency }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3 purchase-card-bottom">
+                <div class="container purchase-card-buttons__wrapper mt-0">
+                    <div class="row purchase-card-buttons__total-payment mr-1">
+                        <div class="shopee-guarantee-icon purchase-card-buttons__shopee-guarantee-icon">
+
+                        </div>
+                        <span class="purchase-card-buttons__label-price">
+                            訂單金額:
+                        </span>
+                        <span class="purchase-card-buttons__total-price">
+                            ${{ order.price|ToCurrency }}
+                        </span>
+                    </div>
+
+                    <div class="row purchase-card-buttons__container">
+                        <div class="col purchase-card-buttons__text-info">
+                            <span class="purchase-text-info">
+                                {% if order.order_status_id == 1 or order.order_status_id == 2 %}
+                                商品預計於 2019-08-16 前出貨。
+                                {% endif %}
+                            </span>
+                        </div>
+                        <div class="purchase-card-buttons__show-button-wrapper">
+                            <button  class="shopee-button-solid shopee-button-solid--fill shopee-button-solid--primary ">
+                                <span class="purchase-card-buttons__button-content"> 聯絡賣家 </span>
+                            </button>
+                        </div>
+                        <div class="purchase-card-buttons__show-button-wrapper">
+                            <button class="shopee-button-outline shopee-button-outline--fill shopee-button-outline--primary ">
+                                <span class="purchase-card-buttons__button-content"> 查看訂單詳情 </span>
+                            </button>
+                        </div>
+                        <div class="purchase-card-buttons__open-more-wrapper">
+                            <div class="purchase-card-buttons__open-more-button">
+                                <span class="purchase-card-buttons__button-content">更多</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        {% endfor %}
+    {% else %}
+        <div class="row purchase">
+            <div class="purchase-list-empty-item-container mt-3">
+                <div class="purchase-list-empty-item-icon"></div>
+                <div class="purchase-list-empty-item-text">尚未有訂單</div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

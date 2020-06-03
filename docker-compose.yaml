@@ -1,0 +1,57 @@
+version: '3'
+services:
+  jaspershop-db:
+    restart: always
+    image: mysql
+    environment:
+       MYSQL_ROOT_PASSWORD: rootroot
+       MYSQL_DATABASE: jaspershop
+       MYSQL_USER: root
+       MYSQL_PASSWORD: rootroot
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - ./mysql-data:/docker-entrypoint-initdb.d
+    networks:
+      - japsershop-network
+    ports:
+      - "3307:3306"
+
+  nginx:
+    build: ./nginx
+    restart: always
+    ports: 
+      - "8000:80"
+    volumes:
+      - ./JasperShop:/usr/src/app/
+      - ./log:/var/log/nginx
+
+  jaspershop:
+    restart: always
+    image: jaspershop:latest
+    environment:
+      - DJANGO_SETTINGS_MODULE=JasperShop.k8s_settings.local
+    build: ./JasperShop
+    depends_on:
+      - jaspershop-db
+    networks:
+      - japsershop-network
+    volumes:
+      - ./JasperShop:/usr/src/app/
+    command: uwsgi --ini uwsgi.ini
+
+  jaspershop-rabbitmq:
+    restart: always
+    hostname: jaspershop-rabbitmq
+    image: rabbitmq:management
+    ports:
+      - 15672:15672
+      - 5672:5672
+    volumes:
+      - ./rabbitmq_data:/var/lib/rabbitmq
+
+networks:
+  japsershop-network:
+    driver: bridge
+
+volumes:
+  mysql-data:  # db

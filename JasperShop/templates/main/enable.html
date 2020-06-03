@@ -1,0 +1,32 @@
+{% extends 'main/base.html' %}
+{% block title %} Jasper Shop {% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3">
+
+            <h1 class="my-4">Jasper Shop</h1>
+
+        </div>
+
+        <div class="col-lg-9">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4"></div>
+                    <div class="col-lg-4 my-5">
+                        <img
+                            src="https://vignette.wikia.nocookie.net/avalon/images/5/57/Icon-info.png/revision/latest?cb=20130303110856&path-prefix=zh">
+                    </div>
+                    <div class="col-lg-4"></div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="my-5">　　{{ message }}</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

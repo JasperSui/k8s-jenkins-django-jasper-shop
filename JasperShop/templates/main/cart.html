@@ -1,0 +1,309 @@
+{% extends 'main/base.html' %}
+{% block title %} Jasper Shop {% endblock %}
+{% block content %}
+{% load static %}
+{% load filters %}
+    <div class="container" id="cartContainer">
+        {% if product_number_list %}
+            <div class="row mt-4 cart-title">
+                購物車
+            </div>
+            <div class="row purchase mt-4 items-center">
+                <div class="col-lg-1 my-3">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="checkboxAll">
+                        <label class="custom-control-label" for="checkboxAll"></label>
+                    </div>
+                </div>
+                <div class="col-lg-4 ">
+                    商品
+                </div>
+                <div class="col-lg-2">
+                    單價
+                </div>
+                <div class="col-lg-2">
+                    數量
+                </div>
+                <div class="col-lg-2">
+                    總價
+                </div>
+                <div class="col-lg-1">
+                    操作
+                </div>
+            </div>
+            {% for unit in product_number_list %}
+                <div class="row purchase mt-4">
+                    <div class="col-lg-1 my-5 items-center">
+                        <!-- Default unchecked -->
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input product-checkbox" id="checkbox{{ unit.0.id }}">
+                            <label class="custom-control-label" for="checkbox{{ unit.0.id }}"></label>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="row my-3">
+                            <div class="col-lg-3">
+                                <a href="{% url 'Item' unit.0.id %}"><img src="{% static unit.0.img_path %}" style="max-height: 82px; max-width: 82px;"></a>
+                            </div>
+                            <div class="col-lg-9 cart-item-name">
+                                <a href="{% url 'Item' unit.0.id %}">{{ unit.0.name }}</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 items-center my-5">
+                        ${{ unit.0.price|ToCurrency }}
+                    </div>
+                    <div class="col-lg-2 items-center">
+                        <div class="row items-center my-5">
+                            <div class="col-lg-3"></div>
+                            <button id="itemNumberMinusButton{{ unit.0.id }}" class="item-button minus-button">
+                                <svg class="item-svg" enable-background="new 0 0 10 10" viewBox="0 0 10 10" x="0" y="0">
+                                    <polygon points="4.5 4.5 3.5 4.5 0 4.5 0 5.5 3.5 5.5 4.5 5.5 10 5.5 10 4.5"></polygon>
+                                </svg>
+                            </button>
+                            <input id="itemNumberInput{{ unit.0.id }}" class="item-button-mid item-number-input" type="text" value="{{ unit.1 }}">
+                            <button id="itemNumberPlusButton{{ unit.0.id }}" class="item-button plus-button">
+                                <svg class="item-svg" enable-background="new 0 0 10 10" viewBox="0 0 10 10" x="0" y="0">
+                                    <polygon points="10 4.5 5.5 4.5 5.5 0 4.5 0 4.5 4.5 0 4.5 0 5.5 4.5 5.5 4.5 10 5.5 10 5.5 5.5 10 5.5">
+                                    </polygon>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 items-center my-5" style="color: #ee4d2d;">
+                        <span class="total-price" id="totalPrice{{ unit.0.id }}">${{ unit.2|ToCurrency }}</span>
+                    </div>
+                    <div class="col-lg-1 items-center my-5">
+                        <button class="remove-from-cart-button" id="removeFromCartButton{{ unit.0.id }}">刪除</button>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="row purchase mt-4">
+                <div class="col-lg-6 my-3">
+                    
+                </div>
+                <div class="col-lg-4 my-3" style="text-align: right">
+                    <div class="cart-page-footer-summary__subtotal-text">
+                        購買總金額 (0 個商品):
+                    </div>
+                    <div class="cart-page-footer-summary__subtotal-amount">
+                        $0
+                    </div>
+                </div>
+                <div class="col-lg-2 my-3">
+                    <button id="cart-page-buy-button"  class="cart-page--empty__button">
+                        <span class="cart-page--empty__action-text">
+                            結帳
+                        </span>
+                    </button>
+                </div>
+            </div>
+        {% else %}
+            <div class="cart-page--empty">
+                <div class="cart-page--empty__image"></div>
+                <div class="cart-page--empty__text">你的購物車還是空的</div><a class="cart-page--empty__action" href="/">
+                    <button class="cart-page--empty__button">
+                        <span class="cart-page--empty__action-text">去購物吧！
+                        </span>
+                    </button>
+                </a>
+            </div>
+            <div class="cart-page__recommend"></div>
+        {% endif %}
+
+        <script>
+
+            $(".product-checkbox").change(function () {
+                    var $latest_item_number = GetLatestItemNumber()
+                    $('.cart-page-footer-summary__subtotal-text').html('購買總金額 (' + $latest_item_number + ' 個商品:)');
+                    var $latest_amount = FormatCurrency(GetLatestAmount())
+                    $('.cart-page-footer-summary__subtotal-amount').html($latest_amount);
+                });
+
+            function GetLatestItemNumber() {
+                var $item_number = 0;
+                $('.item-number-input').each(function (i, obj) {
+                    $this = $(this);
+                    var $product_id = $($this).attr("id").replace(/[^0-9\.]/g, '');
+                    var $this_checkbox = $('#checkbox' + $product_id);
+                    if ($this_checkbox[0].checked){
+                        $this_item_number = parseInt($(this).val());
+                        $item_number += $this_item_number;
+                    }
+                });
+                return $item_number;
+            }
+
+            function GetLatestAmount() {
+                var $amount = 0;
+                $('.total-price').each(function (i, obj) {
+                    $this = $(this);
+                    var $product_id = $($this).attr("id").replace(/[^0-9\.]/g, '');
+                    var $this_checkbox = $('#checkbox' + $product_id);
+                    if ($this_checkbox[0].checked) {
+                        $this_item_price = parseInt($(this).html().replace('$', '').replace(',', ''));
+                        $amount += $this_item_price;
+                    }
+                });
+                return $amount;
+            }
+
+            function FormatCurrency(total) {
+                var neg = false;
+                if (total < 0) {
+                    neg = true;
+                    total = Math.abs(total);
+                }
+                return (neg ? "-$" : '$') + parseFloat(total, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString().slice(0, -3);
+            }
+
+            $(document).ready(function () {
+                    $('.minus-button').click(function () {
+                        $this = $(this);
+                        var $item_number_input = $this.next();
+                        var $item_number = parseInt($item_number_input.val());
+                        if ($item_number > 0) {
+                            $item_number -= 1;
+                            $item_number_input.val($item_number);
+                        }
+                        var $unit_price = parseInt($.trim($this.parent().parent().prev().html()).slice(1).replace(',', ''));
+                        $this.parent().parent().next().children().html(FormatCurrency($unit_price * $item_number));
+                        // var $latest_item_number = GetLatestItemNumber()
+                        // $('.cart-page-footer-summary__subtotal-text').html('購買總金額 (' + $latest_item_number + ' 個商品:)');
+                        // var $latest_amount = FormatCurrency(GetLatestAmount())
+                        // $('.cart-page-footer-summary__subtotal-amount').html($latest_amount);
+
+                    })
+                });
+
+            $(document).ready(function () {
+                    $('.plus-button').click(function () {
+                        $this = $(this);
+                        var $item_number_input = $this.prev();
+                        var $item_number = parseInt($item_number_input.val());
+                        $item_number += 1;
+                        $item_number_input.val($item_number);
+                        var $unit_price = parseInt($.trim($this.parent().parent().prev().html()).slice(1).replace(',', ''));
+                        $this.parent().parent().next().children().html(FormatCurrency($unit_price * $item_number));
+                        // var $latest_item_number = GetLatestItemNumber()
+                        // $('.cart-page-footer-summary__subtotal-text').html('購買總金額 ('+ $latest_item_number + ' 個商品:)');
+                        // var $latest_amount = FormatCurrency(GetLatestAmount())
+                        // $('.cart-page-footer-summary__subtotal-amount').html($latest_amount);
+                })
+            });
+
+            $(document).ready(function () {
+                    $('.item-number-input').change(function () {
+                    $this = $(this);
+                    var $item_number = parseInt($this.val());
+                    var $unit_price = parseInt($.trim($this.parent().parent().prev().html()).slice(1).replace(',', ''));
+                    $this.parent().parent().next().children().html(FormatCurrency($unit_price * $item_number));
+                    var $latest_item_number = GetLatestItemNumber()
+                    $('.cart-page-footer-summary__subtotal-text').html('購買總金額 (' + $latest_item_number + ' 個商品:)');
+                    var $latest_amount = FormatCurrency(GetLatestAmount())
+                    $('.cart-page-footer-summary__subtotal-amount').html($latest_amount);
+                });
+            });
+
+            $("#checkboxAll").change(function () {
+                    if (this.checked) {
+                        $('.custom-control-input').prop("checked", true);
+                    }else if(this.checked == false){
+                        $('.custom-control-input').prop("checked", false);
+                    }
+                    var $latest_item_number = GetLatestItemNumber()
+                    $('.cart-page-footer-summary__subtotal-text').html('購買總金額 (' + $latest_item_number + ' 個商品:)');
+                    var $latest_amount = FormatCurrency(GetLatestAmount())
+                    $('.cart-page-footer-summary__subtotal-amount').html($latest_amount);
+                });
+
+            $(".remove-from-cart-button").click(function (e) {
+                $this = $(this);
+                var $product_id = parseInt($($this).attr("id").replace('removeFromCartButton', ''))
+                var product_data = {};
+                product_data["product_id"] = $product_id;
+                swal({
+                    title: "你確定要移除這個商品嗎？",
+                    text: "",
+                    icon: "warning",
+                    buttons: ["取消", "確定"],
+                    dangerMode: true
+                })
+                    .then((isConfirm) => {
+                    if (isConfirm) {
+                        $.ajax({
+                            type: "POST",
+                            url: "{% url 'RemoveFromCart' %}",
+                            data: product_data, // serializes the form's elements.
+                            success: function (result) {
+                                switch (result["status"]) {
+                                    case true:
+                                        swal({
+                                            title: "商品已從購物車移除！",
+                                            text: "",
+                                            icon: "success",
+                                            timer: 1500
+                                        });
+                                        $('#cartContainer').load('#cartContainer');
+                                        break;
+
+                                    case false:
+                                        swal({
+                                            title: "商品移除失敗！",
+                                            text: result["errmsg"],
+                                            icon: "error",
+                                            timer: 1500
+                                        });
+                                        break;
+                                    }
+                                }
+                            });
+                        } 
+                    });
+                });
+
+            $('#cart-page-buy-button').click(function () {
+                var product_number_list = [];
+                var json_data = {};
+                $(".product-checkbox").each(function () {
+                    $this = $(this);
+                    if (this.checked){
+                        var $product_id = $($this).attr("id").replace(/[^0-9\.]/g, '');
+                        var $product_number = $('#itemNumberInput'+ $product_id).val();
+                        product_number_list.push([parseInt($product_id), parseInt($product_number)]);
+                    }
+                });
+                json_data["product_number_list"] = product_number_list;
+
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'BuyItem' %}",
+                    data: {'product_number_list': product_number_list}, // serializes the form's elements.
+                    success: function (result) {
+                        switch (result["status"]) {
+                            case true:
+                                swal({
+                                    title: "購買成功！",
+                                    text: "",
+                                    icon: "success",
+                                    timer: 1500
+                                });
+                                $('#cartContainer').load('#cartContainer');
+                                break;
+
+                            case false:
+                                swal({
+                                    title: "購買失敗！",
+                                    text: result["errmsg"],
+                                    icon: "error",
+                                    timer: 1500
+                                });
+                                break;
+                        }
+                    }
+                });
+
+            })
+        </script>
+    </div>
+{% endblock %}

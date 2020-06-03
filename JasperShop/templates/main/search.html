@@ -1,0 +1,53 @@
+{% extends 'main/base.html' %}
+{% block title %} Jasper Shop {% endblock %}
+{% block content %}
+{% load static %}
+{% load filters %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3">
+
+            <h1 class="my-4">Jasper Shop</h1>
+
+        </div>
+
+        <div class="col-lg-9">
+            <div class="index-content">
+                <div class="container">
+                    <div class="row">
+                        <h5 class="my-4">「{{ keyword }}」的搜尋結果如下，共有 {{ result_number }} 個商品</h1>
+                    </div>
+                    <div class="row">
+                        {% for p in product_list %}
+                        <div class="col-lg-4 col-md-6 mb-4 my-4">
+                            <div class="card h-100">
+                                <a href="{% url 'Item' p.id %}"><img class="card-img-top product-image"
+                                        src="{% static p.img_path %}" alt=""></a>
+                                <div class="card-body">
+                                    <h6 class="card-title product-title">
+                                        <a href="{% url 'Item' p.id %}">{{ p.name }}</a>
+                                    </h6>
+                                    <h5>${{ p.price|ToCurrency }}</h5>
+                                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam
+                                        aspernatur!</p>
+                                </div>
+                                <div class="card-footer">
+                                    <small class="text-muted float-left">&#9733; &#9733; &#9733; &#9733; &#9734; 已售出
+                                        {{ p|GetRandomInt }}</small>
+                                    <small class="text-muted float-right">{{ p|GetRandomProvince }} {{ p|GetRandomDistrict }}</small>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                    </div>
+                    <!-- /.row -->
+
+                </div>
+                <!-- /.col-lg-9 -->
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

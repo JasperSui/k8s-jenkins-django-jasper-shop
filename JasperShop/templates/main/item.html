@@ -1,0 +1,269 @@
+{% extends 'main/base.html' %}
+{% block title %} Jasper Shop {% endblock %}
+{% block content %}
+{% load static %}
+{% load filters %}
+    <div class="container">
+        <div class="row purchase mt-4 px-3 py-3">
+            <div class="col-lg-5">
+                <div class="row">
+                    <img src="{% static product.img_path %}" style="max-height: 450px; max-width: 450px;">
+                </div>
+                <div class="row mt-3">
+                    <img src="{% static product.img_path %}" style="max-height: 82px; max-width: 82px;">
+                </div>
+                <div class="row mt-3">
+                    <div style="padding: 0 30px; align-items: center; -webkit-box-align: center; display: flex;">
+                        <div style="font-size: 16px; color: #222;">
+                            分享:
+                        </div>
+                        <button class="sprite-product-sharing sprite-product-sharing-fm" aria-label="Share on Messenger"></button>
+                        <button class="sprite-product-sharing sprite-product-sharing-fb" aria-label="Share on Facebook"></button>
+                        <button class="sprite-product-sharing sprite-product-sharing-gp" aria-label="Share on Google Plus"></button>
+                        <button class="sprite-product-sharing sprite-product-sharing-pinterest" aria-label="Share on Pinterest"></button>
+                        <button class="sprite-product-sharing sprite-product-sharing-twitter" aria-label="Share on Twitter"></button>
+                    </div>
+                    <div style="border-left: 1px solid rgba(0,0,0,.09); -webkit-box-flex: 1; flex: 1; -webkit-box-pack: center; justify-content: center; -webkit-box-align: center; align-items: center; display: flex;">
+                        <svg width="24" height="20" style="margin-right: 10px;">
+                            <path
+                                d="M19.469 1.262c-5.284-1.53-7.47 4.142-7.47 4.142S9.815-.269 4.532 1.262C-1.937 3.138.44 13.832 12 19.333c11.559-5.501 13.938-16.195 7.469-18.07z"
+                                stroke="#FF424F" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linejoin="round"></path>
+                        </svg>
+                        <div style="font-size: 16px; color: #222;">喜歡 ({{ base_url|GetRandomInt }})</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="row">
+                    <div class="col-lg-12 item-title">
+                        <svg width="33" height="17" class="W86QwR">
+                            <g fill="none" fill-rule="evenodd">
+                                <rect fill="#D0011B" x=".875" y=".665" width="31.599" height="16.102" rx="2"></rect>
+                                <g fill="#FFF">
+                                    <path d="M17.47 7.512h3.201V6.215H17.47z"></path>
+                                    <path d="M18.645 3.851v4.304s.12 2.442-1.018 3.028v1.409c2.4-.382 2.274-4.437 2.274-4.437V3.85h-1.256z">
+                                    </path>
+                                    <path
+                                        d="M17.67 11.158s1.452-.196 2.882-1.568c-.46 1.047-1.232 2.707-2.905 2.986.022-.657.022-1.418.022-1.418z">
+                                    </path>
+                                    <path
+                                        d="M22.345 8.712s.333 4.827-3.269 5.776v-1.322s2.066-.697 2.066-4.454V3.87h8.07c1.049.044.92 1.26.92 1.26l-6.397-.014H22.345v3.597zM27.333 3.158c-.026.134.02.271.057.416l1.52.025-.287-.556c-.063-.132-.174-.317-.398-.38-.225-.078-.784 0-.892.495z">
+                                    </path>
+                                    <path
+                                        d="M25.308 11.385c0 1.443-.932 2.533-2.31 2.31.03 0-.715-.116-1.187-.456.312-.527.538-1.092.538-1.092.318.216.647.256.65.256.707.112 1.132-.51 1.117-1.26-.014-.698 0-2.17 0-2.17V8.42c0-.207-.185-.207-.41-.207h-1.712V6.895h2.382c.452 0 .932.414.932.933V11.385zM28.714 6.494s-.594 4.942-3.472 6.862l.491 1.034s3.297-1.088 4.202-7.896h-1.22z">
+                                    </path>
+                                    <path
+                                        d="M28.865 12.33c.294.384 1.084.71 1.606.71v1.324c-.803 0-1.51-.105-2.205-.714-2.953-2.917-3.082-10.81-3.109-10.81 0-.378.217-.623.6-.626.382-.004.616.226.666.657.277 5.877 1.628 8.32 2.442 9.46z">
+                                    </path>
+                                </g>
+                                <g fill="#FFF">
+                                    <path
+                                        d="M12.122 8.16c0 .207.071.398.407.398l.724.002c.226 0 .525.155.525.546s-.22.621-.475.621h-1.608c-.43 0-.819-.418-.819-.827V7.372h1.248l-.002.93V8.16zM11.307 12.284l-2.564.004-.005-1.016h2.153c.384 0 .4.208.4.521l.016.491zm-3.82 1.269h5.081l-.001-2.713a.808.808 0 0 0-.818-.825l-3.874-.003c-.226 0-.389.185-.389.414v3.127zM7.68 7.358h1.27c0 2.115-1.269 2.237-1.473 2.31a2.803 2.803 0 0 1-.582.114c-.301 0-.468-.114-.559-.346 0 0-.181-.503.258-.68C8.02 8.237 7.68 7.358 7.68 7.358z">
+                                    </path>
+                                    <path
+                                        d="M14.596 12.95c-.003.453-.222.725-.617.725v1.281c1.455 0 1.879-.67 1.879-1.6v-6.06a.81.81 0 0 0-.79-.827H4.563c-.255 0-.47.138-.47.414v7.072s0 .85 1.286.85V7.733h8.907c.205 0 .311.092.311.32v4.897zM16.384 3.527H4.373s-.895.083-.775 1.27h12.786v-1.27zM6.776 6.257h1.448l-.335-.752c-.148-.377-.398-.494-.712-.494-.277 0-.664.14-.631.584a.591.591 0 0 0 .049.212l.18.45zM13.205 6.258h-1.448l.335-.753c.147-.376.398-.493.712-.493.276 0 .664.139.63.583a.591.591 0 0 1-.048.213l-.181.45zM9.231 2.628a.88.88 0 0 0 .09.582h1.447l-.215-.525c-.095-.157-.22-.391-.436-.471-.224-.08-.777-.08-.886.414z">
+                                    </path>
+                                </g>
+                            </g>
+                        </svg>
+                        {{ product.name }}
+                    </div>
+                </div>
+                <div class="row mt-3 item-price-container items-center">
+                    <div class="col-lg-1 item-original-price">
+                        ${{ original_price|ToCurrency }}
+                    </div>
+                    <div class="col-lg-1 item-price">
+                        ${{ product.price|ToCurrency }}
+                    </div>
+                </div>
+                <div class="row mt-4" style="margin-top: 1.5625rem; padding: 0 1.25rem;">
+                    <div class="col-lg-12">
+                        <div class="row item-label-container">
+
+                            　　我問過律師跟法律人，現在的社群資料大多掌握在特定的平台，企業因為經營者更換，參加紐西蘭政府舉辦的加速計劃，在世界重新思考政府治理的此時，若可行就修法，上班好同事，在協作中解決了問題，政治協商會議是中共領導的統戰組織，經濟部有報告過！日，而NCC發言人翁柏宗也證實，花了一整天時間都在去背肯德基的本業是賣蛋塔的等等來文字轉播結案報告等到川普上台效果就很好看到了，均應調查其是否濫用壟斷的地位，要去識別化這個藥物的副作用是嗜睡這個年頭連鬼都要背債了！<br><br>
+
+                            　　不止是苦，葛德說，在她有機會時，平常我們從自己家裡走到朋友的家裡，但她在她同樣不幸的境遇中證明她的智斷，但那晚雖則結識了一個可愛的小友，許是悵惘。只許你，今天已是壯年；昨天腮邊還帶著圓潤的笑渦，我們的鏈永遠是制定我們行動的上司！<br><br>
+                        </div>
+                        <div class="row mt-3" style="align-items: center; color: #757575;">
+                            <label class="item-label">數量</label>
+                            <button id="itemNumberMinusButton" class="item-button">
+                                <svg class="item-svg" enable-background="new 0 0 10 10" viewBox="0 0 10 10" x="0" y="0">
+                                    <polygon points="4.5 4.5 3.5 4.5 0 4.5 0 5.5 3.5 5.5 4.5 5.5 10 5.5 10 4.5"></polygon>
+                                </svg>
+                            </button>
+                            <input id="itemNumberInput" class="item-button-mid" type="text" value="1">
+                            <button id="itemNumberPlusButton" class="item-button">
+                                <svg class="item-svg" enable-background="new 0 0 10 10" viewBox="0 0 10 10" x="0" y="0">
+                                    <polygon points="10 4.5 5.5 4.5 5.5 0 4.5 0 4.5 4.5 0 4.5 0 5.5 4.5 5.5 4.5 10 5.5 10 5.5 5.5 10 5.5">
+                                    </polygon>
+                                </svg>
+                            </button>
+                            <div class="ml-3" style="color: #757575;">
+                                還剩{{ product.stock }}件
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <button id="addToCartButton" type="button" class="item-add-to-cart">
+                                <svg class="icon-add-to-cart"
+                                    enable-background="new 0 0 15 15" viewBox="0 0 15 15" x="0" y="0">
+                                    <g>
+                                        <g>
+                                            <polyline fill="none" points=".5 .5 2.7 .5 5.2 11 12.4 11 14.5 3.5 3.7 3.5" stroke-linecap="round"
+                                                stroke-linejoin="round" stroke-miterlimit="10"></polyline>
+                                            <circle cx="6" cy="13.5" r="1" stroke="none"></circle>
+                                            <circle cx="11.5" cy="13.5" r="1" stroke="none"></circle>
+                                        </g>
+                                        <line fill="none" stroke-linecap="round" stroke-miterlimit="10" x1="7.5" x2="10.5" y1="7" y2="7"></line>
+                                        <line fill="none" stroke-linecap="round" stroke-miterlimit="10" x1="9" x2="9" y1="8.5" y2="5.5"></line>
+                                    </g>
+                                </svg>
+                                <span>加入購物車</span>
+                            </button>
+                            <button type="button" class="item-buy" id="purchase-directly-button">直接購買</button>
+                        </div>
+                        <div class="row mt-4" style="overflow: initial; padding: 1.5625rem; -webkit-box-direction: normal; border-top: 1px solid rgba(0, 0, 0, 0.05);">
+                            <div class="col items-center">
+                                <div class="row">
+                                    <div class="col-1">
+                                        <img class="item-rule-img"
+                                            src="https://cdngarenanow-a.akamaihd.net/shopee/shopee-pcmall-live-sg/assets/03d764143ee9949ba23eee51c1f9b009.png">
+                                    </div>
+                                    <div class="col-8 item-rule">
+                                        <div>15天鑑賞期</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col items-center">
+                                <div class="row">
+                                    <div class="col-1">
+                                        <img class="item-rule-img"
+                                            src="https://cdngarenanow-a.akamaihd.net/shopee/shopee-pcmall-live-sg/assets/4183e407d45c9d68e8f73f22ab6f39de.png">
+                                    </div>
+                                    <div class="col-8 item-rule">
+                                        <div>退貨無負擔</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col items-center">
+                                <div class="row">
+                                    <div class="col-1">
+                                        <img class="item-rule-img"
+                                            src="https://cdngarenanow-a.akamaihd.net/shopee/shopee-pcmall-live-sg/assets/413b87104bd41d20a89386dbd96fbd17.png">
+                                    </div>
+                                    <div class="col-8 item-rule">
+                                        <div>假一賠二</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#itemNumberMinusButton').click(function () {
+                var $itemNumberInput = $('#itemNumberInput');
+                var $itemNumber = parseInt($itemNumberInput.val());
+                if ($itemNumber > 0) {
+                    $itemNumber -= 1;
+                    $itemNumberInput.val($itemNumber);
+                }
+            })
+        });
+
+        $(document).ready(function () {
+            $('#itemNumberPlusButton').click(function () {
+                var $itemNumberInput = $('#itemNumberInput');
+                var $itemNumber = parseInt($itemNumberInput.val());
+                if ($itemNumber+1 <= {{ product.stock }}){
+                    $itemNumber += 1;
+                }
+                $itemNumberInput.val($itemNumber);
+            })
+        });
+
+        $(document).ready(function () {
+            $('#itemNumberInput').keypress(function () {
+                var $itemNumberInput = $('#itemNumberInput');
+                var $itemNumber = parseInt($itemNumberInput.val());
+                if ($itemNumber > {{ product.stock }}){
+                    $itemNumberInput.val({{ product.stock }});
+                }
+            })
+        });
+
+        $("#addToCartButton").click(function (e) {
+                var $itemNumber = parseInt($('#itemNumberInput').val());
+                var product_data = {};
+                product_data["product_id"] = {{ product.id }};
+                product_data["product_number"] = $itemNumber;
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'AddToCart' %}",
+                    data: product_data, // serializes the form's elements.
+                    success: function (result) {
+                        switch (result["status"]) {
+                            case true:
+                                swal({
+                                    title: "商品已加入購物車！",
+                                    text: "",
+                                    icon: "success",
+                                    timer: 1500
+                                });
+                                break;
+
+                            case false:
+                                swal({
+                                    title: "商品加入失敗！",
+                                    text: result["errmsg"],
+                                    icon: "error",
+                                    timer: 1500
+                                });
+                                break;
+                        }
+                    }
+
+                });
+
+                e.preventDefault(); // avoid to execute the actual submit of the form.
+            });
+
+            $("#purchase-directly-button").click(function (e) {
+                var $itemNumber = parseInt($('#itemNumberInput').val());
+                var product_data = {};
+                product_data["product_id"] = {{ product.id }};
+                product_data["product_number"] = $itemNumber;
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'PurchaseDirectly' %}",
+                    data: product_data, // serializes the form's elements.
+                    success: function (result) {
+                        switch (result["status"]) {
+                            case true:
+                                location.href="{{ base_url }}cart"
+                                break;
+
+                            case false:
+                                swal({
+                                    title: "商品直接購買失敗！",
+                                    text: result["errmsg"],
+                                    icon: "error",
+                                    timer: 1500
+                                });
+                                break;
+                        }
+                    }
+
+                });
+
+                e.preventDefault(); // avoid to execute the actual submit of the form.
+            });
+        
+
+    </script>
+
+{% endblock %}

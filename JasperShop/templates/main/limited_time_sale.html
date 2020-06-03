@@ -1,0 +1,102 @@
+{% extends 'main/base.html' %}
+{% block title %} Jasper Shop {% endblock %}
+{% block content %}
+{% load static %}
+{% load filters %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="index-content">
+                <div class="container">
+
+                    <div class="row my-4 items-center" style="align-items: center; -webkit-box-align: center; display: flex;">
+                        <div class="col-4"></div>
+                        <h1 class="col-4 items-center">限時特賣專區</h1>
+                        <div class="col-4"></div>
+                    </div>
+                    <div class="row">
+                        {% for p in product_list %}
+                        <div class="col-lg-12 col-md-12 mb-4 mt-3">
+                            <div class="card h-100">
+                                <div class="row items-center">
+                                    {% if p.is_enabled %}
+                                    <div class="col-4"></div>
+                                        <div class="col-4 items-center">
+                                            <h3 class="items-center my-4 mx-4" style="color: #FF0000; font-weight: bold">限時搶購中！！</h3>
+                                        </div>
+                                    {% else %}
+                                        <div class="col-2"></div>
+                                        <div class="col-8">
+                                            <ul>
+                                                <li class="li-time-counter"><span class="li-span-time-counter" id="days{{forloop.counter}}"></span>days</li>
+                                                <li class="li-time-counter"><span class="li-span-time-counter" id="hours{{forloop.counter}}"></span>Hours</li>
+                                                <li class="li-time-counter"><span class="li-span-time-counter" id="minutes{{forloop.counter}}"></span>Minutes</li>
+                                                <li class="li-time-counter"><span class="li-span-time-counter" id="seconds{{forloop.counter}}"></span>Seconds</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-2"></div>
+                                    {% endif %}
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4 my-4>
+                                        <a href="{% url 'LimitedItem' p.product.id %}"><img class="card-img-top product-image"
+                                                src="{% static p.product.img_path %}" alt=""></a>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <div>
+                                            <div class="row my-4">
+                                                <h6 class="card-title product-title">
+                                                    <a href="{% url 'LimitedItem' p.product.id %}">{{ p.product.name }}</a>
+                                                </h6>
+                                            </div>
+                                            <div class="row my-4">
+                                                <h5>${{ p.product.price|ToCurrency }}</h5>
+                                            </div>
+                                            <div class="row my-4">
+                                                <p class="card-text">
+                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet
+                                                    numquam
+                                                    aspernatur!
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                    </div>
+                    <!-- /.row -->
+
+                </div>
+                <!-- /.col-lg-9 -->
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+    const second = 1000,
+        minute = second * 60,
+        hour = minute * 60,
+        day = hour * 24;
+
+        {% for p in product_list %}
+            {% if p.is_enabled == False %}
+                let coundown{{ forloop.counter }} = new Date('{{ p.start_time.isoformat }}').getTime()
+                x{{ forloop.counter }} = setInterval(function () {
+
+                    let distance{{ forloop.counter }} = coundown{{ forloop.counter }} - new Date().getTime();
+
+                    document.getElementById('days{{forloop.counter}}').innerText = Math.floor(distance{{ forloop.counter }} / (day)),
+                    document.getElementById('hours{{forloop.counter}}').innerText = Math.floor((distance{{ forloop.counter }} % (day)) / (hour)),
+                    document.getElementById('minutes{{forloop.counter}}').innerText = Math.floor((distance{{ forloop.counter}} % (hour)) / (minute)),
+                    document.getElementById('seconds{{forloop.counter}}').innerText = Math.floor((distance{{ forloop.counter }} % (minute)) / second);
+                }, second)
+            {% endif %}
+        {% endfor %}
+</script>
+{% endblock %}
