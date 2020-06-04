@@ -1,6 +1,5 @@
 
 mysite/Scripts/JasperShop/JasperShop/settings\.py
 /log/
-/mysql-data/
 /rabbitmq_data/
 *.pyc
