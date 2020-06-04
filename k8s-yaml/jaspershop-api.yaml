@@ -1,0 +1,76 @@
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: staging
+  name: jaspershop-public
+  labels:
+    app: jaspershop-api
+spec:
+  type: NodePort
+  ports:
+  - name: jaspershop-api
+    protocol: TCP
+    port: 80
+    targetPort: 5000
+  selector:
+    app: jaspershop-api
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: staging
+  name: popeye
+  labels:
+    app: jaspershop-api
+spec:
+  type: ClusterIP
+  ports:
+  - name: jaspershop-api
+    protocol: TCP
+    port: 8000
+    targetPort: 5000
+  selector:
+    app: jaspershop-api
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: staging
+  name: jaspershop-api
+  labels:
+    app: popeye
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jaspershop-api
+  template:
+    metadata:
+      annotations:
+        version: latest
+      labels:
+        app: jaspershop-api
+    spec:
+      containers:
+
+      - name: popeye-nginx
+        image: suiyang03/k8s-jenkins-django-jasper-shop_nginx
+        ports:
+        - name: jaspershop-api
+          containerPort: 80
+        command: ["nginx", "-g", "daemon off;"]
+
+      - name: jaspershop-api
+        image: suiyang03/k8s-jenkins-django-jasper-shop_api
+        imagePullPolicy: Always
+        command: ['uwsgi', '--ini', 'uwsgi.ini']        
+        ports:
+        - name: jaspershop-api
+          containerPort: 8000
+
+      volumes: 
+      - name: nginx-conf
+        configMap:
+          name: popeye-nginx-conf
+      # - name: shared-assets
+      #   emptyDir: {}
