@@ -11,7 +11,7 @@ spec:
   - name: jaspershop-api
     protocol: TCP
     port: 80
-    targetPort: 5000
+    targetPort: 80
   selector:
     app: jaspershop-api
 ---
@@ -19,7 +19,7 @@ kind: Service
 apiVersion: v1
 metadata:
   namespace: staging
-  name: popeye
+  name: jaspershop
   labels:
     app: jaspershop-api
 spec:
@@ -27,8 +27,8 @@ spec:
   ports:
   - name: jaspershop-api
     protocol: TCP
-    port: 8000
-    targetPort: 5000
+    port: 80
+    targetPort: 80
   selector:
     app: jaspershop-api
 ---
@@ -38,9 +38,9 @@ metadata:
   namespace: staging
   name: jaspershop-api
   labels:
-    app: popeye
+    app: jaspershop
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: jaspershop-api
@@ -53,24 +53,40 @@ spec:
     spec:
       containers:
 
-      - name: popeye-nginx
-        image: suiyang03/k8s-jenkins-django-jasper-shop_nginx
+      - name: jaspershop-nginx
+        image: nginx:stable
         ports:
-        - name: jaspershop-api
-          containerPort: 80
-        command: ["nginx", "-g", "daemon off;"]
+          - containerPort: 80
+        volumeMounts:
+          - name: nginx-conf-volume
+            mountPath: /etc/nginx/conf.d
+          - name: sock-volume
+            mountPath: /usr/src/app/
+          - name: static-files
+            mountPath: /usr/src/app/static/
 
       - name: jaspershop-api
-        image: suiyang03/k8s-jenkins-django-jasper-shop_api
+        image: suiyang03/k8s-jenkins-django-jasper-shop_api:latest
         imagePullPolicy: Always
-        command: ['uwsgi', '--ini', 'uwsgi.ini']        
-        ports:
-        - name: jaspershop-api
-          containerPort: 8000
-
-      volumes: 
-      - name: nginx-conf
-        configMap:
-          name: popeye-nginx-conf
-      # - name: shared-assets
-      #   emptyDir: {}
+        env:
+          - name: DJANGO_SETTINGS_MODULE
+            value: JasperShop.k8s_settings.local
+        command: ["/bin/sh","-c"]
+        args: ["uwsgi --ini uwsgi.ini && python manage.py collectstatic"]
+        volumeMounts:
+          - name: static-files
+            mountPath: /usr/src/app/static/
+          - name: sock-volume
+            mountPath: /usr/src/app/socket/
+      
+      volumes:
+        - name: nginx-conf-volume
+          configMap:
+            name: nginx-conf
+            items:
+            - key: jaspershop-nginx.conf
+              path: jaspershop-nginx.conf
+        - name: sock-volume
+          emptyDir: {}
+        - name: static-files
+          emptyDir: {}

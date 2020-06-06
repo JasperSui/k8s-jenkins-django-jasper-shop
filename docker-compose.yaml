@@ -37,7 +37,7 @@ services:
       - japsershop-network
     volumes:
       - ./JasperShop:/usr/src/app/
-    command: uwsgi --ini uwsgi.ini
+    command: uwsgi --ini local_uwsgi.ini
 
   jaspershop-rabbitmq:
     restart: always
