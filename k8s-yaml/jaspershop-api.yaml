@@ -32,6 +32,19 @@ spec:
   selector:
     app: jaspershop-api
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: static-files-pv-claim
+  labels:
+    app: jaspershop
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 20Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -62,7 +75,7 @@ spec:
             mountPath: /etc/nginx/conf.d
           - name: sock-volume
             mountPath: /usr/src/app/
-          - name: static-files
+          - name: static-files-persistent-storage
             mountPath: /usr/src/app/static/
 
       - name: jaspershop-api
@@ -74,7 +87,7 @@ spec:
         command: ["/bin/sh","-c"]
         args: ["uwsgi --ini uwsgi.ini && python manage.py collectstatic"]
         volumeMounts:
-          - name: static-files
+          - name: static-files-persistent-storage
             mountPath: /usr/src/app/static/
           - name: sock-volume
             mountPath: /usr/src/app/socket/
@@ -88,5 +101,6 @@ spec:
               path: jaspershop-nginx.conf
         - name: sock-volume
           emptyDir: {}
-        - name: static-files
-          emptyDir: {}
+        - name: static-files-persistent-storage
+          persistentVolumeClaim:
+            claimName: static-files-pv-claim
