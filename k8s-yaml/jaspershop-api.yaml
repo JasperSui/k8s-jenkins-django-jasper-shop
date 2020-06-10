@@ -4,16 +4,16 @@ metadata:
   namespace: staging
   name: jaspershop-public
   labels:
-    app: jaspershop-api
+    app: jaspershop
 spec:
   type: NodePort
   ports:
-  - name: jaspershop-api
+  - name: jaspershop
     protocol: TCP
     port: 80
     targetPort: 80
   selector:
-    app: jaspershop-api
+    app: jaspershop
 ---
 kind: Service
 apiVersion: v1
@@ -21,52 +21,39 @@ metadata:
   namespace: staging
   name: jaspershop
   labels:
-    app: jaspershop-api
+    app: jaspershop
 spec:
   type: ClusterIP
   ports:
-  - name: jaspershop-api
+  - name: jaspershop
     protocol: TCP
     port: 80
     targetPort: 80
   selector:
-    app: jaspershop-api
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: static-files-pv-claim
-  labels:
     app: jaspershop
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 20Gi
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: staging
-  name: jaspershop-api
+  name: jaspershop
   labels:
     app: jaspershop
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: jaspershop-api
+      app: jaspershop
   template:
     metadata:
       annotations:
         version: latest
       labels:
-        app: jaspershop-api
+        app: jaspershop
     spec:
       containers:
 
-      - name: jaspershop-nginx
+      - name: nginx
         image: nginx:stable
         ports:
           - containerPort: 80
@@ -75,22 +62,22 @@ spec:
             mountPath: /etc/nginx/conf.d
           - name: sock-volume
             mountPath: /usr/src/app/
-          - name: static-files-persistent-storage
+          - name: static-volume
             mountPath: /usr/src/app/static/
 
-      - name: jaspershop-api
+      - name: api
         image: suiyang03/k8s-jenkins-django-jasper-shop_api:latest
         imagePullPolicy: Always
         env:
           - name: DJANGO_SETTINGS_MODULE
             value: JasperShop.k8s_settings.local
         command: ["/bin/sh","-c"]
-        args: ["uwsgi --ini uwsgi.ini && python manage.py collectstatic"]
+        args: [" mkdir volume/static/ -p; python manage.py collectstatic --noinput; cp -R ./static/ ./volume/; uwsgi --ini uwsgi.ini;"]
         volumeMounts:
-          - name: static-files-persistent-storage
-            mountPath: /usr/src/app/static/
           - name: sock-volume
             mountPath: /usr/src/app/socket/
+          - name: static-volume
+            mountPath: /usr/src/app/volume/static/
       
       volumes:
         - name: nginx-conf-volume
@@ -99,8 +86,7 @@ spec:
             items:
             - key: jaspershop-nginx.conf
               path: jaspershop-nginx.conf
+        - name: static-volume
+          emptyDir: {}
         - name: sock-volume
           emptyDir: {}
-        - name: static-files-persistent-storage
-          persistentVolumeClaim:
-            claimName: static-files-pv-claim
