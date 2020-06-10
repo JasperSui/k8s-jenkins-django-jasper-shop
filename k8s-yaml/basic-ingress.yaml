@@ -3,6 +3,10 @@ kind: Ingress
 metadata:
  name: basic-ingress
 spec:
- backend:
-   serviceName: web
-   servicePort: 80
+  rules:
+  - http:
+      paths:
+      - path: /
+        backend:
+          serviceName: japsershop-public
+          servicePort: jaspershop-port

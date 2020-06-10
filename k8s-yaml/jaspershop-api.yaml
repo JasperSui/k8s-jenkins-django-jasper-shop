@@ -8,10 +8,10 @@ metadata:
 spec:
   type: NodePort
   ports:
-  - name: jaspershop
+  - name: jaspershop-port
     protocol: TCP
     port: 80
-    targetPort: 80
+    targetPort: jaspershop-port
   selector:
     app: jaspershop
 ---
