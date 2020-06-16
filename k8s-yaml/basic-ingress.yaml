@@ -1,12 +1,12 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
- name: basic-ingress
+  name: ingress
+  namespace: staging
 spec:
   rules:
   - http:
       paths:
-      - path: /
-        backend:
-          serviceName: japsershop-public
+      - backend:
+          serviceName: jaspershop-public
           servicePort: jaspershop-port

@@ -1,0 +1,29 @@
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: staging
+  name: jenkins-public
+  labels:
+    app.kubernetes.io/instance: my-release
+spec:
+  type: NodePort
+  ports:
+  - name: jenkins-port
+    protocol: TCP
+    port: 80
+    targetPort: 8080
+  selector:
+    app.kubernetes.io/instance: my-release
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: jenkins-ingress
+  namespace: staging
+spec:
+  rules:
+  - http:
+      paths:
+      - backend:
+          serviceName: jenkins-public
+          servicePort: jenkins-port
