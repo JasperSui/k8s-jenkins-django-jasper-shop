@@ -39,6 +39,7 @@ urlpatterns = [
     path('ajax/BuyItem/', views.BuyItem, name='BuyItem'),
     path('ajax/BuyLimitedItem/', views.BuyLimitedItem, name='BuyLimitedItem'),
     path('ajax/PurchaseDirectly/', views.PurchaseDirectly, name='PurchaseDirectly'),
+    path('ajax/PurchaseDirectlyy/', views.PurchaseDirectly, name='PurchaseDirectly'),
     path('user/', include('user.urls'))
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
