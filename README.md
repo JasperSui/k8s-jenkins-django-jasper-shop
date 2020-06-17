@@ -6,3 +6,7 @@
 
 - [[K8s + Jenkins] 將舊有 Django 專案翻新 (1) - 前言](https://jaspersui.xyz/2020/06/02/k8s-jenkins-django-project-1/)
 - [[K8s + Jenkins] 將舊有 Django 專案翻新 (2) - Dockerize](https://jaspersui.xyz/2020/06/03/k8s-jenkins-django-project-2/)
+- [[K8s + Jenkins] 將舊有 Django 專案翻新 (3) - Google Kubernetes Engine (上)](https://jaspersui.xyz/2020/06/06/k8s-jenkins-django-project-3/)
+- [[K8s + Jenkins] 將舊有 Django 專案翻新 (4) - Google Kubernetes Engine (下)](https://jaspersui.xyz/2020/06/10/k8s-jenkins-django-project-4/)
+- [[K8s + Jenkins] 將舊有 Django 專案翻新 (5) - Django Static File With Nginx](https://jaspersui.xyz/2020/06/14/k8s-jenkins-django-project-5/)
+- [[K8s + Jenkins] 將舊有 Django 專案翻新 (6) - Ingress](https://jaspersui.xyz/2020/06/16/k8s-jenkins-django-project-6/)
