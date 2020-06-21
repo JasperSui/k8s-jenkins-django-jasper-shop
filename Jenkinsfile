@@ -54,33 +54,5 @@ spec:
                 }
             }
         }
-
-        stage('Initalize Kubectl'){
-            steps {
-                sh 'yum install curl'
-                sh "curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl"
-                sh "chmod +x ./kubectl"
-                sh "mv ./kubectl /usr/local/bin/kubectl"
-            }
-        }
-        
-        stage('Apply K8s Shell Script'){
-            steps {
-                withKubeConfig([credentialsId: 'JasperShop', serverUrl: 'https://35.201.219.29']) {
-                    sh 'chmod +x k8s-yaml/scripts/update_k8s.sh'
-                    sh 'k8s-yaml/scripts/update_k8s.sh'
-                }
-            }
-        }
-        
-        stage('Rollout Restart All Deployment'){
-            steps {
-                withKubeConfig([credentialsId: 'JasperShop', serverUrl: 'https://35.201.219.29']) {
-                    sh "kubectl rollout restart Deployment/jaspershop"
-                    sh "kubectl rollout restart Deployment/jaspershop-db"
-                    sh "kubectl rollout restart Deployment/jaspershop-rabbitmq"
-                }
-            }
-        }
     }
 }
